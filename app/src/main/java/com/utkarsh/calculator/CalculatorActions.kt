@@ -1,0 +1,14 @@
+package com.utkarsh.calculator
+
+sealed class CalculatorActions {
+    data class Number(val number: Int): CalculatorActions()
+    object Clear: CalculatorActions()
+    object Delete: CalculatorActions()
+    object Decimal: CalculatorActions()
+    object Calculate: CalculatorActions()
+    data class Operation(val operation: CalculatorOperation): CalculatorActions()
+    data class UseHistory(val value: String): CalculatorActions()
+    object ClearHistory: CalculatorActions()
+    object ToggleHistory: CalculatorActions()
+    object ToggleScientific: CalculatorActions()
+}
