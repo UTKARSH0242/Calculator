@@ -10,10 +10,12 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -132,6 +134,7 @@ fun DisplaySection(
     context: Context,
     modifier: Modifier = Modifier
 ) {
+    val scrollState = rememberScrollState()
     val infiniteTransition = rememberInfiniteTransition(label = "cursor")
     val cursorAlpha by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -145,6 +148,10 @@ fun DisplaySection(
         ),
         label = "cursorAlpha"
     )
+
+    LaunchedEffect(state.number1, state.operation, state.number2) {
+        scrollState.animateScrollTo(scrollState.maxValue)
+    }
 
     Column(
         modifier = modifier
@@ -170,6 +177,7 @@ fun DisplaySection(
         ) {
             Column(horizontalAlignment = Alignment.End) {
                 Row(
+                    modifier = Modifier.horizontalScroll(scrollState),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End
                 ) {
@@ -182,7 +190,8 @@ fun DisplaySection(
                         textAlign = TextAlign.End,
                         style = if (isLandscape) MaterialTheme.typography.displaySmall else MaterialTheme.typography.displayLarge,
                         color = number1Color,
-                        maxLines = 1
+                        maxLines = 1,
+                        softWrap = false
                     )
                     state.operation?.let {
                         Text(
@@ -190,7 +199,8 @@ fun DisplaySection(
                             textAlign = TextAlign.End,
                             style = if (isLandscape) MaterialTheme.typography.displaySmall else MaterialTheme.typography.displayLarge,
                             color = operationColor,
-                            maxLines = 1
+                            maxLines = 1,
+                            softWrap = false
                         )
                     }
                     Text(
@@ -198,7 +208,8 @@ fun DisplaySection(
                         textAlign = TextAlign.End,
                         style = if (isLandscape) MaterialTheme.typography.displaySmall else MaterialTheme.typography.displayLarge,
                         color = number2Color,
-                        maxLines = 1
+                        maxLines = 1,
+                        softWrap = false
                     )
 
                     Box(
